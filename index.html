@@ -3,82 +3,89 @@
         <title>La giclette - Satisfactory</title>
 
         <style>
+            :root {
+                --primary-color: #0071bc;
+                --dark-color: #1E2024;
+            }
+
+            * {
+                font-family: 'system-ui', sans-serif;
+            }
+            table caption {
+                font-size: 1.5em;
+                font-weight: bold;
+                text-align: left;
+                color: var(--primary-color);
+                border-bottom: 4px solid var(--dark-color);
+                margin-bottom: 10px;
+            }
+
             table {
+                text-align: center;
+                margin-bottom: 20px;
                 border-collapse: collapse;
                 width: 100%;
             }
 
-            th, td {
-                border: 1px solid black;
+            table, tr, td, th {
+                border: 1px solid var(--dark-color);
+            }
+
+            td, th {
                 padding: 8px;
-                text-align: center;
-            }
-
-            th {
-                background-color: #f2f2f2;
-            }
-
-            tr:nth-child(even) {
-                background-color: #f2f2f2;
-            }
-
-            table tfoot {
-                font-weight: bold;
             }
 
             table tr td:first-child {
                 text-align: left;
             }
+            table tfoot {
+                font-weight: bold;
+            }
+
+            #lines {
+                display: grid;
+grid-template-columns: repeat(auto-fit, minmax(780px, 1fr));
+                gap: 20px;
+                column-gap: 20px;
+                margin: 40px;
+            }
+
+            #lines > div {
+                width: 100%;
+            }
         </style>
     </head>
 <body>
 
-<table>
-    <caption>Ligne droite</caption>
-    <thead>
-        <tr>
-            <th>
-                Nom
-            </th>
-            <th>
-                Fer
-            </th>
-            <th>
-                Cuivre
-            </th>
-            <th>
-                Charbon
-            </th>
-            <th>
-                Calcaire
-            </th>
-            <th>
-                E.M.E
-            </th>
-            <th>
-                Quartz
-            </th>
-            <th>
-                Caterium
-            </th>
-            <th>
-                Petrol
-            </th>
-            <th>
-                Souffre
-            </th>
-        </tr>
-    </thead>
-    <tbody id="right-line">
-
-    </tbody>
-    <tfoot id="right-line-total">
-    </tfoot>
-</table>
-
+<div id="lines">
+    <div id="right-line-container"></div>
+    <div id="left-line-container"></div>
+</div>
+<div id="factory-line-container"></div>
+<div id="diff-line-container"></div>
 </body>
 
 <script>
+
+    /**
+     * @typedef Line
+     * @type {Object}
+     * @property {string} [name=""] - The name of the line
+     * @property {number} [iron=0] - The amount of iron needed
+     * @property {number} [copper=0] - The amount of copper needed
+     * @property {number} [coal=0] - The amount of coal needed
+     * @property {number} [limestone=0] - The amount of limestone needed
+     * @property {number} [eme=0] - The amount of eme needed
+     * @property {number} [quartz=0] - The amount of quartz needed
+     * @property {number} [caterium=0] - The amount of caterium needed
+     * @property {number} [petrol=0] - The amount of petrol needed
+     * @property {number} [sulfur=0] - The amount of sulfur needed
+     */
+
+    /**
+     * The right line
+     * @type {Line[]}
+     */
     const rightLine = [
         {
             name: 'File eletrique',
@@ -151,80 +158,222 @@
         }
     ];
 
-    function computeRightLine() {
-        const rightLineElement = document.getElementById('right-line');
-        const rightLineTotalElement = document.getElementById('right-line-total');
-
-        const total = {
-            iron: 0,
-            copper: 0,
-            coal: 0,
-            limestone: 0,
-            quartz: 0,
-            eme: 0,
-            caterium: 0,
-            petrol: 0,
-            sulfur: 0,
+    /**
+     * The left line
+     * @type {Line[]}
+     */
+    const leftLine = [
+        {
+            name: 'Test',
+            iron: 10,
         }
+    ]
 
-        rightLine.forEach((item) => {
-            total.iron += item.iron ?? 0;
-            total.copper += item.copper ?? 0;
-            total.coal += item.coal ?? 0;
-            total.limestone += item.limestone ?? 0;
-            total.quartz += item.quartz ?? 0;
-            total.eme += item.eme ?? 0;
-            total.caterium += item.caterium ?? 0;
-            total.petrol += item.petrol ?? 0;
-            total.sulfur += item.sulfur ?? 0;
+    /**
+     * The total line
+     * @type {Line[]}
+     */
+    const factoryLine = [];
 
-            rightLineElement.appendChild(computeLine(item));
-        });
-        rightLineTotalElement.appendChild(computeTotalLine(total));
+
+    /**
+     *
+     * @type {{input: Line[], left: Line[], right: Line[]}}
+     */
+    const totals = {
+        right: [],
+        left: [],
+        factory: [],
+        input: [],
     }
 
+    /**
+     * Function to compute a whole table
+     * @param prefix {string} - The prefix of the table
+     * @param data {Line[]} - The data to compute
+     */
+    function computeTable(prefix, data) {
+        const bodyElement = document.getElementById(`${prefix}-line-body`);
+        const totalElement = document.getElementById(`${prefix}-line-total`);
+
+        data.forEach((item) => {
+            if(prefix === 'right' || prefix === 'left') {
+                totals[prefix].iron = (totals[prefix].iron ?? 0) + (item.iron ?? 0);
+                totals[prefix].copper = (totals[prefix].copper ?? 0) + (item.copper ?? 0);
+                totals[prefix].coal = (totals[prefix].coal ?? 0) + (item.coal ?? 0);
+                totals[prefix].limestone = (totals[prefix].limestone ?? 0) + (item.limestone ?? 0);
+                totals[prefix].quartz = (totals[prefix].quartz ?? 0) + (item.quartz ?? 0);
+                totals[prefix].eme = (totals[prefix].eme ?? 0) + (item.eme ?? 0);
+                totals[prefix].caterium = (totals[prefix].caterium ?? 0) + (item.caterium ?? 0);
+                totals[prefix].petrol = (totals[prefix].petrol ?? 0) + (item.petrol ?? 0);
+                totals[prefix].sulfur = (totals[prefix].sulfur ?? 0) + (item.sulfur ?? 0);
+
+                totals.factory['']
+            }
+
+            bodyElement.appendChild(computeLine(item));
+        });
+        if(prefix === 'right' || prefix === 'left') {
+            factoryLine.push({
+                name: prefix,
+                iron: totals[prefix].iron,
+                copper: totals[prefix].copper,
+                coal: totals[prefix].coal,
+                limestone: totals[prefix].limestone,
+                quartz: totals[prefix].quartz,
+                eme: totals[prefix].eme,
+                caterium: totals[prefix].caterium,
+                petrol: totals[prefix].petrol,
+                sulfur: totals[prefix].sulfur,
+            });
+
+            totals.factory.iron = (totals.factory.iron ?? 0) + (totals[prefix].iron ?? 0);
+            totals.factory.copper = (totals.factory.copper ?? 0) + (totals[prefix].copper ?? 0);
+            totals.factory.coal = (totals.factory.coal ?? 0) + (totals[prefix].coal ?? 0);
+            totals.factory.limestone = (totals.factory.limestone ?? 0) + (totals[prefix].limestone ?? 0);
+            totals.factory.quartz = (totals.factory.quartz ?? 0) + (totals[prefix].quartz ?? 0);
+            totals.factory.eme = (totals.factory.eme ?? 0) + (totals[prefix].eme ?? 0);
+            totals.factory.caterium = (totals.factory.caterium ?? 0) + (totals[prefix].caterium ?? 0);
+            totals.factory.petrol = (totals.factory.petrol ?? 0) + (totals[prefix].petrol ?? 0);
+            totals.factory.sulfur = (totals.factory.sulfur ?? 0) + (totals[prefix].sulfur ?? 0);
+        }
+        totalElement.appendChild(computeTotalLine(totals[prefix]));
+    }
+
+    /**
+     * Function to compute a cell
+     * @param data {Line} - The current element
+     * @param parent {HTMLElement} - The parent element
+     * @param key {string} - The key of the element in the data
+     */
     function computeCell(data, parent, key) {
         const td = document.createElement('td');
         td.innerText = data[key] ?? "0";
         parent.appendChild(td);
     }
 
+    /**
+     * Wrapper to compute all common cells without the first one
+     * @param data {Line} - The current element
+     * @param parent {HTMLElement} - The parent element
+     */
+    function computeLineWithoutFirst(data, parent) {
+        computeCell(data, parent, 'iron');
+        computeCell(data, parent, 'copper');
+        computeCell(data, parent, 'coal');
+        computeCell(data, parent, 'limestone');
+        computeCell(data, parent, 'eme');
+        computeCell(data, parent, 'quartz');
+        computeCell(data, parent, 'caterium');
+        computeCell(data, parent, 'petrol');
+        computeCell(data, parent, 'sulfur');
+    }
+
+    /**
+     * Function to compute a whole line
+     * @param item {Line} - The current element
+     * @returns {HTMLTableRowElement} - The line
+     */
     function computeLine(item) {
         const tr = document.createElement('tr');
 
         computeCell(item, tr, 'name');
-        computeCell(item, tr, 'iron');
-        computeCell(item, tr, 'copper');
-        computeCell(item, tr, 'coal');
-        computeCell(item, tr, 'limestone');
-        computeCell(item, tr, 'eme');
-        computeCell(item, tr, 'quartz');
-        computeCell(item, tr, 'caterium');
-        computeCell(item, tr, 'petrol');
-        computeCell(item, tr, 'sulfur');
+        computeLineWithoutFirst(item, tr);
 
         return tr;
     }
 
+    /**
+     * Function to compute the total line
+     * @param total {Line} - The total line
+     * @returns {HTMLTableRowElement} - The total line
+     */
     function computeTotalLine(total) {
         const tr = document.createElement('tr');
         const td = document.createElement('td');
         td.innerText = "TOTAL";
         tr.appendChild(td);
 
-        computeCell(total, tr, 'iron');
-        computeCell(total, tr, 'copper');
-        computeCell(total, tr, 'coal');
-        computeCell(total, tr, 'limestone');
-        computeCell(total, tr, 'eme');
-        computeCell(total, tr, 'quartz');
-        computeCell(total, tr, 'caterium');
-        computeCell(total, tr, 'petrol');
-        computeCell(total, tr, 'sulfur');
+        computeLineWithoutFirst(total, tr);
 
         return tr;
     }
 
-    computeRightLine();
+    /**
+     * Function to create a table with appropriate title and prefix and heders
+     * @param title {string} - The tit le of the table
+     * @param prefix {string} - The prefix of the generated IDs
+     * @returns {HTMLTableElement} - The HTML element to append
+     */
+    function createTable(title, prefix) {
+        const table = document.createElement('table');
+        const thead = document.createElement('thead');
+        const tbody = document.createElement('tbody');
+        const tfoot = document.createElement('tfoot');
+        const caption = document.createElement('caption');
+
+        caption.innerText = title;
+
+        tfoot.id = `${prefix}-line-total`;
+        table.id = `${prefix}-line-body`;
+
+        const tr = document.createElement('tr');
+        const th = document.createElement('th');
+        th.innerText = "Nom";
+        tr.appendChild(th);
+
+        const thIron = document.createElement('th');
+        thIron.innerText = "Fer";
+        tr.appendChild(thIron);
+
+        const thCopper = document.createElement('th');
+        thCopper.innerText = "Cuivre";
+        tr.appendChild(thCopper);
+
+        const thCoal = document.createElement('th');
+        thCoal.innerText = "Charbon";
+        tr.appendChild(thCoal);
+
+        const thLimestone = document.createElement('th');
+        thLimestone.innerText = "Calcaire";
+        tr.appendChild(thLimestone);
+
+        const thEme = document.createElement('th');
+        thEme.innerText = "E.M.E";
+        tr.appendChild(thEme);
+
+        const thQuartz = document.createElement('th');
+        thQuartz.innerText = "Quartz";
+        tr.appendChild(thQuartz);
+
+        const thCaterium = document.createElement('th');
+        thCaterium.innerText = "Caterium";
+        tr.appendChild(thCaterium);
+
+        const thPetrol = document.createElement('th');
+        thPetrol.innerText = "Petrol";
+        tr.appendChild(thPetrol);
+
+        const thSulfur = document.createElement('th');
+        thSulfur.innerText = "Souffre";
+        tr.appendChild(thSulfur);
+
+        thead.appendChild(tr);
+
+        table.appendChild(caption);
+        table.appendChild(thead);
+        table.appendChild(tbody);
+        table.appendChild(tfoot);
+
+        return table;
+    }
+
+    document.getElementById('right-line-container').appendChild(createTable('Ligne de droite', 'right'));
+    document.getElementById('left-line-container').appendChild(createTable('Ligne de gauche', 'left'));
+    document.getElementById('factory-line-container').appendChild(createTable('Usine complete', 'factory'));
+
+    computeTable('right', rightLine);
+    computeTable('left', leftLine);
+    computeTable('factory', factoryLine);
 </script>
 </html>
