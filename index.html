@@ -1,0 +1,230 @@
+<html lang="fr">
+    <head>
+        <title>La giclette - Satisfactory</title>
+
+        <style>
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            th, td {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: center;
+            }
+
+            th {
+                background-color: #f2f2f2;
+            }
+
+            tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            table tfoot {
+                font-weight: bold;
+            }
+
+            table tr td:first-child {
+                text-align: left;
+            }
+        </style>
+    </head>
+<body>
+
+<table>
+    <caption>Ligne droite</caption>
+    <thead>
+        <tr>
+            <th>
+                Nom
+            </th>
+            <th>
+                Fer
+            </th>
+            <th>
+                Cuivre
+            </th>
+            <th>
+                Charbon
+            </th>
+            <th>
+                Calcaire
+            </th>
+            <th>
+                E.M.E
+            </th>
+            <th>
+                Quartz
+            </th>
+            <th>
+                Caterium
+            </th>
+            <th>
+                Petrol
+            </th>
+            <th>
+                Souffre
+            </th>
+        </tr>
+    </thead>
+    <tbody id="right-line">
+
+    </tbody>
+    <tfoot id="right-line-total">
+    </tfoot>
+</table>
+
+</body>
+
+<script>
+    const rightLine = [
+        {
+            name: 'File eletrique',
+            copper: 15,
+        },
+        {
+            name: 'Cables',
+            copper: 30
+        },
+        {
+            name: 'Tole de cuivre',
+            copper: 20
+        },
+        {
+            name: 'Cristal de quartz',
+            quartz: 37.5
+        },
+        {
+            name: 'Tuyau en acier',
+            iron: 30,
+            coal: 30,
+        },
+        {
+            name: 'Poutre en acier',
+            iron: 60,
+            coal: 60,
+        },
+        {
+            name: 'Poutre en beton arme',
+            iron: 72,
+            coal: 72,
+            limestone: 108,
+        },
+        {
+            name: 'E.M.E reanime',
+            eme: 120,
+        },
+        {
+            name: 'Silice',
+            quartz: 22.5,
+        },
+        {
+            name: 'Filactif',
+            caterium: 36,
+        },
+        {
+            name: 'Stator',
+            iron: 22.5,
+            copper: 20,
+            coal: 22.5,
+        },
+        {
+            name: 'Moteur',
+            iron: 157.5,
+            copper: 40,
+            coal: 45,
+        },
+        {
+            name: 'TurboCarburant + Plastique + Caoutchouc',
+            coal: 26.8,
+            petrol: 120,
+            sulfur: 26.8,
+        },
+        {
+            name: 'Moteur modulaire',
+            iron: 145.5,
+            copper: 16,
+            coal: 18,
+            petrol: 22.5,
+        }
+    ];
+
+    function computeRightLine() {
+        const rightLineElement = document.getElementById('right-line');
+        const rightLineTotalElement = document.getElementById('right-line-total');
+
+        const total = {
+            iron: 0,
+            copper: 0,
+            coal: 0,
+            limestone: 0,
+            quartz: 0,
+            eme: 0,
+            caterium: 0,
+            petrol: 0,
+            sulfur: 0,
+        }
+
+        rightLine.forEach((item) => {
+            total.iron += item.iron ?? 0;
+            total.copper += item.copper ?? 0;
+            total.coal += item.coal ?? 0;
+            total.limestone += item.limestone ?? 0;
+            total.quartz += item.quartz ?? 0;
+            total.eme += item.eme ?? 0;
+            total.caterium += item.caterium ?? 0;
+            total.petrol += item.petrol ?? 0;
+            total.sulfur += item.sulfur ?? 0;
+
+            rightLineElement.appendChild(computeLine(item));
+        });
+        rightLineTotalElement.appendChild(computeTotalLine(total));
+    }
+
+    function computeCell(data, parent, key) {
+        const td = document.createElement('td');
+        td.innerText = data[key] ?? "0";
+        parent.appendChild(td);
+    }
+
+    function computeLine(item) {
+        const tr = document.createElement('tr');
+
+        computeCell(item, tr, 'name');
+        computeCell(item, tr, 'iron');
+        computeCell(item, tr, 'copper');
+        computeCell(item, tr, 'coal');
+        computeCell(item, tr, 'limestone');
+        computeCell(item, tr, 'eme');
+        computeCell(item, tr, 'quartz');
+        computeCell(item, tr, 'caterium');
+        computeCell(item, tr, 'petrol');
+        computeCell(item, tr, 'sulfur');
+
+        return tr;
+    }
+
+    function computeTotalLine(total) {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.innerText = "TOTAL";
+        tr.appendChild(td);
+
+        computeCell(total, tr, 'iron');
+        computeCell(total, tr, 'copper');
+        computeCell(total, tr, 'coal');
+        computeCell(total, tr, 'limestone');
+        computeCell(total, tr, 'eme');
+        computeCell(total, tr, 'quartz');
+        computeCell(total, tr, 'caterium');
+        computeCell(total, tr, 'petrol');
+        computeCell(total, tr, 'sulfur');
+
+        return tr;
+    }
+
+    computeRightLine();
+</script>
+</html>
