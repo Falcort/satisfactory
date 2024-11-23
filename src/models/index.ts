@@ -1,4 +1,4 @@
-import { FactoryLineType, ProductionLineType } from './types.ts';
+import { FactoryLineType, ProductionLineType } from '../types';
 
 export const RightFactoryLine: FactoryLineType[] = [
   {

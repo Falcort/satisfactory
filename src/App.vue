@@ -16,7 +16,7 @@
 import { VtThemeProvider, VtTheme } from 'vuetella';
 import Table from './components/Table.vue';
 import { FactoryLineHeaders } from './common.ts';
-import { LeftFactoryLine, ProductionLine, RightFactoryLine } from './data.ts';
+import { LeftFactoryLine, ProductionLine, RightFactoryLine } from './models';
 import CompleteFactory from './components/CompleteFactory.vue';
 import DifferenceTable from './components/DifferenceTable.vue';
 </script>
@@ -24,7 +24,7 @@ import DifferenceTable from './components/DifferenceTable.vue';
 
 <style scoped lang="scss">
 .divided {
-  grid-template-columns: repeat(auto-fit, minmax(780px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(900px, 1fr));
 }
 
 .grid {
