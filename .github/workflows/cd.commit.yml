@@ -16,10 +16,6 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
-      - name: Test 1
-        run: sed -i '' 's|<script type="module" crossorigin src="/assets|<script type="module" crossorigin src="./assets|g' dist/index.html
-      - name: Test 1
-        run: sed -i '' 's|<link rel="stylesheet" crossorigin href="/assets|<link rel="stylesheet" crossorigin href="./assets|g' dist/index.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
