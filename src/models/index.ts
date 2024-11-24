@@ -147,7 +147,7 @@ export const ProductionLine: ProductionLineType[] = [
   {
     name: 'Base de debut Dermi',
     level: 2,
-    copper: 240,
+    copper: 480,
   },
   {
     name: 'Entree de la base',
