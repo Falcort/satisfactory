@@ -89,6 +89,15 @@
         {{ row.sulfur }}
       </template>
     </template>
+
+    <template #[`item.bauxite`]="{ row }">
+      <template v-if="row.name === 'Total'">
+        <span class="bold">{{ row.bauxite }}</span>
+      </template>
+      <template v-else>
+        {{ row.bauxite }}
+      </template>
+    </template>
   </VtDataTable>
 </template>
 

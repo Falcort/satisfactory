@@ -16,6 +16,7 @@ export function getTotal(title: string, data: FactoryLineType[]): FactoryLineTyp
     total.caterium = (total.caterium ?? 0) + (line.caterium ?? 0);
     total.oil = (total.oil ?? 0) + (line.oil ?? 0);
     total.sulfur = (total.sulfur ?? 0) + (line.sulfur ?? 0);
+    total.bauxite = (total.bauxite ?? 0) + (line.bauxite ?? 0);
   });
 
   return total;
@@ -38,5 +39,6 @@ export function getDifference(input: FactoryLineType[], output: FactoryLineType[
     caterium: (totalOutput.caterium ?? 0) - (totalInput.caterium ?? 0),
     oil: (totalOutput.oil ?? 0) - (totalInput.oil ?? 0),
     sulfur: (totalOutput.sulfur ?? 0) - (totalInput.sulfur ?? 0),
+    bauxite: (totalOutput.bauxite ?? 0) - (totalInput.bauxite ?? 0),
   };
 }

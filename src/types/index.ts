@@ -8,6 +8,7 @@ export type MineralsType = {
   caterium?: number;
   oil?: number;
   sulfur?: number;
+  bauxite?: number;
 }
 
 export type FactoryLineType = MineralsType & {

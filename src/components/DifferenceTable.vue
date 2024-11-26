@@ -80,6 +80,15 @@
         <span class="bad">{{ row.sulfur.toFixed(2) }}</span>
       </template>
     </template>
+
+    <template #[`item.bauxite`]="{ row }">
+      <template v-if="row.bauxite > 0">
+        <span class="good">{{ row.bauxite.toFixed(2) }}</span>
+      </template>
+      <template v-else>
+        <span class="bad">{{ row.bauxite.toFixed(2) }}</span>
+      </template>
+    </template>
   </VtDataTable>
 </template>
 

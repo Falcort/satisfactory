@@ -120,6 +120,13 @@ export const LeftFactoryLine: FactoryLineType[] = [
     iron: 11.25,
     copper: 60,
     coal: 11.25
+  },
+  {
+    name: 'Unité de contrôle adaptative',
+    caterium: 16.8,
+    copper: 70,
+    iron: 232.5,
+    coal: 90,
   }
 ];
 
@@ -187,7 +194,7 @@ export const ProductionLine: ProductionLineType[] = [
   {
     name: 'Grotte - 3',
     level: 2,
-    eme: 120,
+    eme: 300,
   },
   {
     name: 'Tres loin vertical Raiju - 1',
@@ -222,12 +229,12 @@ export const ProductionLine: ProductionLineType[] = [
   {
     name: 'Dermi brume - 1',
     level: 2,
-    sulfur: 60,
+    sulfur: 150,
   },
   {
     name: 'Dermi brume - 2',
     level: 2,
-    caterium: 120,
+    caterium: 300,
   },
   {
     name: 'Dermi hors radar - 1',
@@ -249,4 +256,10 @@ export const ProductionLine: ProductionLineType[] = [
     level: 2,
     coal: 120,
   },
+  ,
+  {
+    name: 'Dermi loin bauxite',
+    level: 2,
+    bauxite: 480,
+  }
 ];
