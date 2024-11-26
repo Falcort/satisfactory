@@ -35,6 +35,10 @@ export const MinerHeaders: VtDataTableHeader[] = [
   {
     label: 'Soufre',
     key: 'sulfur',
+  },
+  {
+    label: 'Bauxite',
+    key: 'bauxite',
   }
 ]
 export const FactoryLineHeaders: VtDataTableHeader[] = [
