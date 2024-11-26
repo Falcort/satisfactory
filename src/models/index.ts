@@ -256,7 +256,6 @@ export const ProductionLine: ProductionLineType[] = [
     level: 2,
     coal: 120,
   },
-  ,
   {
     name: 'Dermi loin bauxite',
     level: 2,
