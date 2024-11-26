@@ -134,22 +134,22 @@ export const ProductionLine: ProductionLineType[] = [
   {
     name: 'Base de debut - 1',
     level: 2,
-    iron: 240,
+    iron: 480,
   },
   {
     name: 'Base de debut - 2',
     level: 2,
-    iron: 240,
+    iron: 480,
   },
   {
     name: 'Base de debut - 3',
     level: 2,
-    iron: 240,
+    iron: 480,
   },
   {
     name: 'Base de debut - 4',
     level: 2,
-    iron: 240,
+    iron: 480,
   },
   {
     name: 'Base de debut Dermi',
